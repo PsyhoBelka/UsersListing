@@ -1,4 +1,4 @@
-package entity;
+package ua.rozhkov.UsersListing.entity;
 
 import java.sql.Date;
 
@@ -68,3 +68,4 @@ public class User {
 				"dateOfBirth="+this.dateOfBirth.toString()+"}";
 	}
 }
+

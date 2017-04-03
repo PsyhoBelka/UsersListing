@@ -1,6 +1,7 @@
-package dao;
+package ua.rozhkov.UsersListing.dao;
 
-import entity.User;
+
+import ua.rozhkov.UsersListing.entity.User;
 
 import java.sql.Date;
 import java.util.List;
