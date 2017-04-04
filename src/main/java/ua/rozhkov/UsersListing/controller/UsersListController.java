@@ -92,6 +92,7 @@ public class UsersListController {
 		usersTableView.setItems(FXCollections.observableArrayList(usersObservableList));
 	}
 	
+	@FXML
 	public void exitButtonClick(ActionEvent actionEvent) {
 		usersListStage.close();
 	}
@@ -108,7 +109,8 @@ public class UsersListController {
 	
 	@FXML
 	public void deleteSelectedButtonClick(ActionEvent actionEvent) {
-		
+		userService.deleteUser(usersTableView.getSelectionModel().getSelectedItem().getId());
+		refreshUsersListButton.fire();
 	}
 	
 	@FXML
@@ -131,10 +133,8 @@ public class UsersListController {
 	
 	@FXML
 	public void dateSearchButtonClick(ActionEvent actionEvent) {
-		
+		userService.searchBetweenDate(java.sql.Date.valueOf(startDateSearch.getValue()), java.sql.Date.valueOf(endDateSearch.getValue()));
 	}
-	
-	
 	
 	private void showUserEditing(boolean mode) throws IOException {
 		Stage userEditingStage =new Stage();
@@ -147,6 +147,7 @@ public class UsersListController {
 		final UserEditingController userEditingController=fxmlLoader.getController();
 		userEditingController.setUserEditingStage(userEditingStage);
 		userEditingController.setUserEditingMode(mode);
+		userEditingController.setUsersListController(this);
 		if (mode){
 			userEditingController.setUser(getSelectedUser());
 		}

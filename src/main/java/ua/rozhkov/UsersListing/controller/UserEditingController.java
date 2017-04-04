@@ -20,6 +20,7 @@ public class UserEditingController {
 	private Stage userEditingStage;
 	private User user;
 	private UserService userService = new JdbcUserService();
+	private UsersListController usersListController;
 	
 	@FXML
 	public BorderPane userEditingBorderPane;
@@ -53,6 +54,10 @@ public class UserEditingController {
 		this.user = user;
 	}
 	
+	public void setUsersListController(UsersListController usersListController) {
+		this.usersListController = usersListController;
+	}
+	
 	@FXML
 	public void saveButtonClick(ActionEvent actionEvent) {
 		if (userEditingMode) {
@@ -60,6 +65,8 @@ public class UserEditingController {
 		} else {
 			saveAdd();
 		}
+		usersListController.refreshUsersListButton.fire();
+		cancelButton.fire();
 	}
 	
 	@FXML
@@ -78,13 +85,14 @@ public class UserEditingController {
 	}
 	
 	private User saveUser() {
-		user = new User();
-		user.setFirstName(firstNameEdit.getText());
-		user.setLastName(lastNameEdit.getText());
-		user.setSalary(Float.valueOf(salaryEdit.getText()));
-		user.setAge(Integer.valueOf(ageEdit.getText()));
-		user.setDateOfBirth(Date.valueOf(dateOfBirthDatePicker.getValue()));
-		return user;
+		User tempUser = new User();
+		tempUser.setId(user.getId());
+		tempUser.setFirstName(firstNameEdit.getText());
+		tempUser.setLastName(lastNameEdit.getText());
+		tempUser.setSalary(Float.valueOf(salaryEdit.getText()));
+		tempUser.setAge(Integer.valueOf(ageEdit.getText()));
+		tempUser.setDateOfBirth(Date.valueOf(dateOfBirthDatePicker.getValue()));
+		return tempUser;
 	}
 	
 	public void onShown() {
