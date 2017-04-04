@@ -2,7 +2,6 @@ package ua.rozhkov.UsersListing.controller;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -22,13 +21,12 @@ import ua.rozhkov.UsersListing.service.implementation.JdbcUserService;
 
 import java.io.IOException;
 import java.util.Date;
-import java.util.function.Predicate;
 
 public class UsersListController {
 	
-	private ObservableList<User> usersObservableList;
+	private ObservableList <User> usersObservableList;
 	private Stage usersListStage;
-	private UserService userService=new JdbcUserService();
+	private UserService userService = new JdbcUserService();
 	
 	@FXML
 	Label usersListLabel;
@@ -46,9 +44,9 @@ public class UsersListController {
 	Button exitButton;
 	
 	@FXML
-	TableView<User> usersTableView;
+	TableView <User> usersTableView;
 	@FXML
-	TableColumn<User, Integer> usersIdColumn;
+	TableColumn <User, Integer> usersIdColumn;
 	@FXML
 	TableColumn <User, String> usersFirstNameColumn;
 	@FXML
@@ -72,7 +70,7 @@ public class UsersListController {
 	Button dateSearchButton;
 	
 	public void initialize() {
-		usersIdColumn.setCellValueFactory(new PropertyValueFactory<User, Integer>("id"));
+		usersIdColumn.setCellValueFactory(new PropertyValueFactory <User, Integer>("id"));
 		usersFirstNameColumn.setCellValueFactory(new PropertyValueFactory <User, String>("firstName"));
 		usersLastNameColumn.setCellValueFactory(new PropertyValueFactory <User, String>("lastName"));
 		usersSalaryColumn.setCellValueFactory(new PropertyValueFactory <User, Float>("salary"));
@@ -82,13 +80,13 @@ public class UsersListController {
 		refreshUsersListButton.fire();
 	}
 	
-	public void setUsersListStage(Stage stage){
-		usersListStage=stage;
+	public void setUsersListStage(Stage stage) {
+		usersListStage = stage;
 	}
 	
 	@FXML
 	public void refreshUsersListButtonClick(ActionEvent actionEvent) {
-		usersObservableList=FXCollections.observableArrayList(userService.getAll());
+		usersObservableList = FXCollections.observableArrayList(userService.getAll());
 		usersTableView.setItems(FXCollections.observableArrayList(usersObservableList));
 	}
 	
@@ -116,15 +114,7 @@ public class UsersListController {
 	@FXML
 	public void searchFirstNameEditKeyReleased(KeyEvent keyEvent) {
 		if (keyEvent.getCode() == KeyCode.getKeyCode(KeyCode.ENTER.getName())) {
-			FilteredList <User> usersFilteredList = new FilteredList <>(usersObservableList, null);
-			final String expression = searchFirstNameEdit.getText();
-			usersFilteredList.setPredicate(new Predicate <User>() {
-				@Override
-				public boolean test(User user) {
-					return ((user.getFirstName().toLowerCase().contains(expression)) && (user.getFirstName() != null));
-				}
-			});
-			usersTableView.setItems(usersFilteredList);
+			usersTableView.setItems((ObservableList <User>) userService.filterList(usersObservableList, searchFirstNameEdit.getText()));
 		} else if (keyEvent.getCode() == KeyCode.getKeyCode(KeyCode.ESCAPE.getName())) {
 			searchFirstNameEdit.clear();
 			usersTableView.setItems(usersObservableList);
@@ -137,18 +127,18 @@ public class UsersListController {
 	}
 	
 	private void showUserEditing(boolean mode) throws IOException {
-		Stage userEditingStage =new Stage();
+		Stage userEditingStage = new Stage();
 		userEditingStage.setTitle("Edit user's info");
 		
-		FXMLLoader fxmlLoader=new FXMLLoader();
+		FXMLLoader fxmlLoader = new FXMLLoader();
 		fxmlLoader.setLocation(System.class.getResource("/fxml/userEditing.fxml"));
-		BorderPane borderPane=fxmlLoader.load();
+		BorderPane borderPane = fxmlLoader.load();
 		
-		final UserEditingController userEditingController=fxmlLoader.getController();
+		final UserEditingController userEditingController = fxmlLoader.getController();
 		userEditingController.setUserEditingStage(userEditingStage);
 		userEditingController.setUserEditingMode(mode);
 		userEditingController.setUsersListController(this);
-		if (mode){
+		if (mode) {
 			userEditingController.setUser(getSelectedUser());
 		}
 		
@@ -159,12 +149,15 @@ public class UsersListController {
 			}
 		});
 		
-		Scene userEditingScene=new Scene(borderPane);
+		Scene userEditingScene = new Scene(borderPane);
 		userEditingStage.setScene(userEditingScene);
 		userEditingStage.show();
 	}
 	
-	private User getSelectedUser(){
+	private User getSelectedUser() {
 		return usersTableView.getSelectionModel().getSelectedItem();
+	}
+	
+	public void searchFirstNameEditOnAction(ActionEvent actionEvent) {
 	}
 }

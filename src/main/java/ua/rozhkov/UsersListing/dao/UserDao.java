@@ -8,13 +8,13 @@ import java.util.List;
 
 public interface UserDao {
 	
-	List<User> getAll();
+	List <User> getAll();
 	
-	void addUser (User user);
+	void addUser(User user);
 	
-	void editUser (User user);
+	void editUser(User user);
 	
 	void deleteUser(int id);
 	
-	List<User> searchBetweenDate(Date start, Date end);
+	List <User> searchBetweenDate(Date start, Date end);
 }

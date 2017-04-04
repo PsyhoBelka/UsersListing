@@ -17,14 +17,14 @@ public class Starter extends Application {
 	
 	@Override
 	public void start(Stage primaryStage) throws IOException {
-		Stage usersListStage=new Stage();
+		Stage usersListStage = new Stage();
 		usersListStage.setTitle("UsersAccounting");
 		
 		FXMLLoader fxmlLoader = new FXMLLoader();
 		fxmlLoader.setLocation(System.class.getResource("/fxml/usersList.fxml"));
 		GridPane usersListGridPane = fxmlLoader.load();
 		
-		Scene usersListScene=new Scene(usersListGridPane);
+		Scene usersListScene = new Scene(usersListGridPane);
 		
 		UsersListController usersListController = fxmlLoader.getController();
 		usersListController.setUsersListStage(usersListStage);

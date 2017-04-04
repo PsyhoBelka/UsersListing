@@ -4,7 +4,6 @@ import ua.rozhkov.UsersListing.dao.mapper.UserMapper;
 import ua.rozhkov.UsersListing.entity.User;
 
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
 
 public class JdbcUserDao implements ua.rozhkov.UsersListing.dao.UserDao {

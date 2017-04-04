@@ -60,12 +60,12 @@ public class User {
 	
 	@Override
 	public String toString() {
-		return "User{"+
-				"id="+this.id+
-				"firstName="+this.firstName+
-				"lastName="+this.lastName+
-				"salary="+this.salary+
-				"dateOfBirth="+this.dateOfBirth.toString()+"}";
+		return "User{" +
+				"id=" + this.id +
+				"firstName=" + this.firstName +
+				"lastName=" + this.lastName +
+				"salary=" + this.salary +
+				"dateOfBirth=" + this.dateOfBirth.toString() + "}";
 	}
 }
 
