@@ -6,7 +6,7 @@
 <?import javafx.scene.text.Font?>
 <BorderPane fx:id="userEditingBorderPane" maxHeight="260.0" maxWidth="300.0" minHeight="-Infinity" minWidth="-Infinity"
             prefHeight="260.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="ua.rozhkov.UsersListing.controller.UserEditingController">
+            >
     <center>
         <Pane BorderPane.alignment="CENTER">
             <children>

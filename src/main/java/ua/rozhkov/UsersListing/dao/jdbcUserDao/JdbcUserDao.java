@@ -14,7 +14,12 @@ public class JdbcUserDao implements ua.rozhkov.UsersListing.dao.UserDao {
 	private String deleteUserSQL = "DELETE FROM mydb.user WHERE `id`=?";
 	private String searchBetweenDateSQL = "SELECT * FROM mydb.user WHERE dateofbirth BETWEEN ? AND ?";
 	
-	private UserMapper userMapper = new UserMapper();
+//	private UserMapper userMapper = new UserMapper();
+	private UserMapper userMapper;
+	
+	public JdbcUserDao(UserMapper userMapper) {
+		this.userMapper = userMapper;
+	}
 	
 	public List <User> getAll() {
 		

@@ -26,7 +26,8 @@ public class UsersListController {
 	
 	private ObservableList <User> usersObservableList;
 	private Stage usersListStage;
-	private UserService userService = new JdbcUserService();
+	//private UserService userService = new JdbcUserService();
+	private UserService userService;
 	
 	@FXML
 	Label usersListLabel;
@@ -68,6 +69,10 @@ public class UsersListController {
 	DatePicker endDateSearch;
 	@FXML
 	Button dateSearchButton;
+	
+	public UsersListController(UserService userService) {
+		this.userService = userService;
+	}
 	
 	public void initialize() {
 		usersIdColumn.setCellValueFactory(new PropertyValueFactory <User, Integer>("id"));
@@ -127,17 +132,20 @@ public class UsersListController {
 	}
 	
 	private void showUserEditing(boolean mode) throws IOException {
+		
 		Stage userEditingStage = new Stage();
 		userEditingStage.setTitle("Edit user's info");
 		
 		FXMLLoader fxmlLoader = new FXMLLoader();
 		fxmlLoader.setLocation(System.class.getResource("/fxml/userEditing.fxml"));
+		final UserEditingController userEditingController = new UserEditingController(userService);
+		fxmlLoader.setController(userEditingController);
 		BorderPane borderPane = fxmlLoader.load();
 		
-		final UserEditingController userEditingController = fxmlLoader.getController();
 		userEditingController.setUserEditingStage(userEditingStage);
 		userEditingController.setUserEditingMode(mode);
 		userEditingController.setUsersListController(this);
+		
 		if (mode) {
 			userEditingController.setUser(getSelectedUser());
 		}

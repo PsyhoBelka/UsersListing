@@ -10,7 +10,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import ua.rozhkov.UsersListing.entity.User;
 import ua.rozhkov.UsersListing.service.UserService;
-import ua.rozhkov.UsersListing.service.implementation.JdbcUserService;
 
 import java.sql.Date;
 
@@ -19,7 +18,8 @@ public class UserEditingController {
 	private boolean userEditingMode;
 	private Stage userEditingStage;
 	private User user;
-	private UserService userService = new JdbcUserService();
+	//	private UserService userService = new JdbcUserService();
+	private UserService userService;
 	private UsersListController usersListController;
 	
 	@FXML
@@ -40,6 +40,10 @@ public class UserEditingController {
 	public Button cancelButton;
 	@FXML
 	public Label editModeLabel;
+	
+	public UserEditingController(UserService userService) {
+		this.userService = userService;
+	}
 	
 	
 	public void setUserEditingStage(Stage userEditingStage) {

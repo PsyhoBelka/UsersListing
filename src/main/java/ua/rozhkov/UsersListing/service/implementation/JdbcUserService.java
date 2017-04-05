@@ -12,7 +12,12 @@ import java.util.List;
 import java.util.function.Predicate;
 
 public class JdbcUserService implements UserService {
-	private UserDao jdbcUserDao = new JdbcUserDao();
+	//private UserDao jdbcUserDao = new JdbcUserDao();
+	private UserDao jdbcUserDao;
+	
+	public JdbcUserService(UserDao jdbcUserDao) {
+		this.jdbcUserDao = jdbcUserDao;
+	}
 	
 	@Override
 	public List <User> getAll() {
