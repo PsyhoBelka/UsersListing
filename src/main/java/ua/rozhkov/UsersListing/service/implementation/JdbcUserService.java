@@ -40,7 +40,7 @@ public class JdbcUserService implements UserService {
 	}
 	
 	@Override
-	public List <User> filterList(List <User> userList, final String expression) {
+	public List <User> filterUsers(List <User> userList, final String expression) {
 		FilteredList <User> usersFilteredList = new FilteredList <>((ObservableList <User>) userList, null);
 		usersFilteredList.setPredicate(new Predicate <User>() {
 			@Override

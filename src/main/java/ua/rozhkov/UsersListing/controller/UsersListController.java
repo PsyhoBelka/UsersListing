@@ -85,17 +85,6 @@ public class UsersListController {
 	}
 	
 	@FXML
-	public void refreshUsersListButtonClick(ActionEvent actionEvent) {
-		usersObservableList = FXCollections.observableArrayList(userService.getAll());
-		usersTableView.setItems(FXCollections.observableArrayList(usersObservableList));
-	}
-	
-	@FXML
-	public void exitButtonClick(ActionEvent actionEvent) {
-		usersListStage.close();
-	}
-	
-	@FXML
 	public void addButtonClick(ActionEvent actionEvent) throws IOException {
 		showUserEditing(false);
 	}
@@ -112,9 +101,20 @@ public class UsersListController {
 	}
 	
 	@FXML
+	public void refreshUsersListButtonClick(ActionEvent actionEvent) {
+		usersObservableList = FXCollections.observableArrayList(userService.getAll());
+		usersTableView.setItems(FXCollections.observableArrayList(usersObservableList));
+	}
+	
+	@FXML
+	public void exitButtonClick(ActionEvent actionEvent) {
+		usersListStage.close();
+	}
+	
+	@FXML
 	public void searchFirstNameEditKeyReleased(KeyEvent keyEvent) {
 		if (keyEvent.getCode() == KeyCode.getKeyCode(KeyCode.ENTER.getName())) {
-			usersTableView.setItems((ObservableList <User>) userService.filterList(usersObservableList, searchFirstNameEdit.getText()));
+			usersTableView.setItems((ObservableList <User>) userService.filterUsers(usersObservableList, searchFirstNameEdit.getText()));
 		} else if (keyEvent.getCode() == KeyCode.getKeyCode(KeyCode.ESCAPE.getName())) {
 			searchFirstNameEdit.clear();
 			usersTableView.setItems(usersObservableList);
@@ -158,6 +158,4 @@ public class UsersListController {
 		return usersTableView.getSelectionModel().getSelectedItem();
 	}
 	
-	public void searchFirstNameEditOnAction(ActionEvent actionEvent) {
-	}
 }

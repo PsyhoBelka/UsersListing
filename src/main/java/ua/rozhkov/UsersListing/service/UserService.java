@@ -17,5 +17,5 @@ public interface UserService {
 	
 	List <User> searchBetweenDate(Date start, Date end);
 	
-	List <User> filterList(List <User> userList, String expression);
+	List <User> filterUsers(List <User> userList, String expression);
 }
