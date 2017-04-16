@@ -2,6 +2,7 @@ package ua.rozhkov.UsersListing.controller;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -16,11 +17,13 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import ua.rozhkov.UsersListing.entity.User;
+import ua.rozhkov.UsersListing.service.ServiceLocator;
 import ua.rozhkov.UsersListing.service.UserService;
-import ua.rozhkov.UsersListing.service.implementation.JdbcUserService;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
+import java.util.function.Predicate;
 
 public class UsersListController {
 	
@@ -70,8 +73,8 @@ public class UsersListController {
 	@FXML
 	Button dateSearchButton;
 	
-	public UsersListController(UserService userService) {
-		this.userService = userService;
+	public UsersListController() {
+		this.userService = ServiceLocator.getInstance().getService(UserService.class);
 	}
 	
 	public void initialize() {
@@ -118,9 +121,17 @@ public class UsersListController {
 	
 	@FXML
 	public void searchFirstNameEditKeyReleased(KeyEvent keyEvent) {
-		if (keyEvent.getCode() == KeyCode.getKeyCode(KeyCode.ENTER.getName())) {
-			usersTableView.setItems((ObservableList <User>) userService.filterList(usersObservableList, searchFirstNameEdit.getText()));
-		} else if (keyEvent.getCode() == KeyCode.getKeyCode(KeyCode.ESCAPE.getName())) {
+		usersTableView.setItems((ObservableList <User>) filterList(usersObservableList, searchFirstNameEdit.getText(), "first"));
+		if (keyEvent.getCode() == KeyCode.getKeyCode(KeyCode.ESCAPE.getName())) {
+			searchFirstNameEdit.clear();
+			usersTableView.setItems(usersObservableList);
+		}
+	}
+	
+	@FXML
+	public void searchLastNameEditKeyReleased(KeyEvent keyEvent) {
+		usersTableView.setItems((ObservableList <User>) filterList(usersObservableList, searchLastNameEdit.getText(), "last"));
+		if (keyEvent.getCode() == KeyCode.getKeyCode(KeyCode.ESCAPE.getName())) {
 			searchFirstNameEdit.clear();
 			usersTableView.setItems(usersObservableList);
 		}
@@ -128,7 +139,9 @@ public class UsersListController {
 	
 	@FXML
 	public void dateSearchButtonClick(ActionEvent actionEvent) {
-		userService.searchBetweenDate(java.sql.Date.valueOf(startDateSearch.getValue()), java.sql.Date.valueOf(endDateSearch.getValue()));
+		usersTableView.setItems(FXCollections.observableArrayList(userService.searchBetweenDate(startDateSearch.getValue(), endDateSearch.getValue())));
+		startDateSearch.setValue(null);
+		endDateSearch.setValue(null);
 	}
 	
 	private void showUserEditing(boolean mode) throws IOException {
@@ -166,6 +179,24 @@ public class UsersListController {
 		return usersTableView.getSelectionModel().getSelectedItem();
 	}
 	
-	public void searchFirstNameEditOnAction(ActionEvent actionEvent) {
+	private List <User> filterList(List <User> userList, String expression, String field) {
+		FilteredList <User> usersFilteredList = new FilteredList <>((ObservableList <User>) userList, null);
+		if (field.equals("first")) {
+			usersFilteredList.setPredicate(new Predicate <User>() {
+				@Override
+				public boolean test(User user) {
+					return ((user.getFirstName().toLowerCase().contains(expression)) && (user.getFirstName() != null));
+				}
+			});
+			return usersFilteredList;
+		} else {
+			usersFilteredList.setPredicate(new Predicate <User>() {
+				@Override
+				public boolean test(User user) {
+					return ((user.getLastName().toLowerCase().contains(expression)) && (user.getLastName() != null));
+				}
+			});
+			return usersFilteredList;
+		}
 	}
 }

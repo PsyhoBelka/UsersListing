@@ -11,14 +11,11 @@ import javafx.stage.Stage;
 import ua.rozhkov.UsersListing.entity.User;
 import ua.rozhkov.UsersListing.service.UserService;
 
-import java.sql.Date;
-
 public class UserEditingController {
 	
 	private boolean userEditingMode;
 	private Stage userEditingStage;
 	private User user;
-	//	private UserService userService = new JdbcUserService();
 	private UserService userService;
 	private UsersListController usersListController;
 	
@@ -62,6 +59,15 @@ public class UserEditingController {
 		this.usersListController = usersListController;
 	}
 	
+	public void initialize(){
+		if (userEditingMode){
+			
+			editModeLabel.setText("Adding mode");
+		}else {
+			editModeLabel.setText("Editing mode");
+		}
+	}
+	
 	@FXML
 	public void saveButtonClick(ActionEvent actionEvent) {
 		if (userEditingMode) {
@@ -95,7 +101,7 @@ public class UserEditingController {
 		tempUser.setLastName(lastNameEdit.getText());
 		tempUser.setSalary(Float.valueOf(salaryEdit.getText()));
 		tempUser.setAge(Integer.valueOf(ageEdit.getText()));
-		tempUser.setDateOfBirth(Date.valueOf(dateOfBirthDatePicker.getValue()));
+		tempUser.setDateOfBirth(dateOfBirthDatePicker.getValue());
 		return tempUser;
 	}
 	
@@ -104,9 +110,9 @@ public class UserEditingController {
 		if (user != null) {
 			firstNameEdit.setText(user.getFirstName());
 			lastNameEdit.setText(user.getLastName());
-			salaryEdit.setText(Float.toString(user.getSalary()));
+			salaryEdit.setText(Float.toString((float)user.getSalary()));
 			ageEdit.setText(Integer.toString(user.getAge()));
-			dateOfBirthDatePicker.setValue(user.getDateOfBirth().toLocalDate());
+			dateOfBirthDatePicker.setValue(user.getDateOfBirth());
 		}
 	}
 	

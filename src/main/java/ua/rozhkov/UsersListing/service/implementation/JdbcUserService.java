@@ -8,6 +8,7 @@ import ua.rozhkov.UsersListing.entity.User;
 import ua.rozhkov.UsersListing.service.UserService;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -40,19 +41,8 @@ public class JdbcUserService implements UserService {
 	}
 	
 	@Override
-	public List <User> searchBetweenDate(Date start, Date end) {
+	public List <User> searchBetweenDate(LocalDate start, LocalDate end) {
 		return jdbcUserDao.searchBetweenDate(start, end);
 	}
 	
-	@Override
-	public List <User> filterList(List <User> userList, final String expression) {
-		FilteredList <User> usersFilteredList = new FilteredList <>((ObservableList <User>) userList, null);
-		usersFilteredList.setPredicate(new Predicate <User>() {
-			@Override
-			public boolean test(User user) {
-				return ((user.getFirstName().toLowerCase().contains(expression)) && (user.getFirstName() != null));
-			}
-		});
-		return usersFilteredList;
-	}
 }

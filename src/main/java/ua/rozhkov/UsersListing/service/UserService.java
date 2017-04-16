@@ -3,6 +3,7 @@ package ua.rozhkov.UsersListing.service;
 import ua.rozhkov.UsersListing.entity.User;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 public interface UserService {
@@ -15,7 +16,6 @@ public interface UserService {
 	
 	void deleteUser(int id);
 	
-	List <User> searchBetweenDate(Date start, Date end);
+	List <User> searchBetweenDate(LocalDate start, LocalDate end);
 	
-	List <User> filterList(List <User> userList, String expression);
 }

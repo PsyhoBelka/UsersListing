@@ -1,14 +1,11 @@
 package ua.rozhkov.UsersListing.dao.mapper;
 
-import org.junit.Assert;
 import org.junit.Test;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import ua.rozhkov.UsersListing.entity.User;
 
 import java.sql.Date;
 import java.sql.ResultSet;
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;

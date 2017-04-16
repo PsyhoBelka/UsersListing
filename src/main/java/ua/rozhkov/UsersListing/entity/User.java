@@ -1,14 +1,14 @@
 package ua.rozhkov.UsersListing.entity;
 
-import java.sql.Date;
+import java.time.LocalDate;
 
 public class User {
 	private int id;
 	private String firstName;
 	private String lastName;
-	private float salary;
+	private double salary;
 	private int age;
-	private Date dateOfBirth;
+	private LocalDate dateOfBirth;
 	
 	public void setId(int id) {
 		this.id = id;
@@ -22,7 +22,7 @@ public class User {
 		this.lastName = lastName;
 	}
 	
-	public void setSalary(float salary) {
+	public void setSalary(double salary) {
 		this.salary = salary;
 	}
 	
@@ -30,7 +30,7 @@ public class User {
 		this.age = age;
 	}
 	
-	public void setDateOfBirth(Date dateOfBirth) {
+	public void setDateOfBirth(LocalDate dateOfBirth) {
 		this.dateOfBirth = dateOfBirth;
 	}
 	
@@ -46,7 +46,7 @@ public class User {
 		return lastName;
 	}
 	
-	public float getSalary() {
+	public double getSalary() {
 		return salary;
 	}
 	
@@ -54,7 +54,7 @@ public class User {
 		return age;
 	}
 	
-	public Date getDateOfBirth() {
+	public LocalDate getDateOfBirth() {
 		return dateOfBirth;
 	}
 	
@@ -62,10 +62,10 @@ public class User {
 	public String toString() {
 		return "User{" +
 				"id=" + this.id +
-				"firstName=" + this.firstName +
-				"lastName=" + this.lastName +
-				"salary=" + this.salary +
-				"dateOfBirth=" + this.dateOfBirth.toString() + "}";
+				" firstName=" + this.firstName +
+				" lastName=" + this.lastName +
+				" salary=" + this.salary +
+				" dateOfBirth=" + this.dateOfBirth.toString() + "}";
 	}
 }
 

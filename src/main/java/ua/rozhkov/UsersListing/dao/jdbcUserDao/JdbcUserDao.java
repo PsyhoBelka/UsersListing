@@ -1,9 +1,11 @@
 package ua.rozhkov.UsersListing.dao.jdbcUserDao;
 
+import org.apache.commons.dbcp2.BasicDataSource;
 import ua.rozhkov.UsersListing.dao.mapper.UserMapper;
 import ua.rozhkov.UsersListing.entity.User;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.List;
 
 public class JdbcUserDao implements ua.rozhkov.UsersListing.dao.UserDao {
@@ -14,11 +16,12 @@ public class JdbcUserDao implements ua.rozhkov.UsersListing.dao.UserDao {
 	private String deleteUserSQL = "DELETE FROM mydb.user WHERE `id`=?";
 	private String searchBetweenDateSQL = "SELECT * FROM mydb.user WHERE dateofbirth BETWEEN ? AND ?";
 	
-//	private UserMapper userMapper = new UserMapper();
-	private UserMapper userMapper;
+	//	private UserMapper userMapper = new UserMapper();
+	private UserMapper userMapper = new UserMapper();
+	private BasicDataSource dataSource;
 	
-	public JdbcUserDao(UserMapper userMapper) {
-		this.userMapper = userMapper;
+	public JdbcUserDao(BasicDataSource dataSource) {
+		this.dataSource = dataSource;
 	}
 	
 	public List <User> getAll() {
@@ -41,9 +44,9 @@ public class JdbcUserDao implements ua.rozhkov.UsersListing.dao.UserDao {
 			
 			preparedStatement.setString(1, user.getFirstName());
 			preparedStatement.setString(2, user.getLastName());
-			preparedStatement.setFloat(3, user.getSalary());
+			preparedStatement.setDouble(3, user.getSalary());
 			preparedStatement.setInt(4, user.getAge());
-			preparedStatement.setDate(5, user.getDateOfBirth());
+			preparedStatement.setDate(5, Date.valueOf(user.getDateOfBirth()));
 			preparedStatement.execute();
 		}
 		catch (SQLException e) {
@@ -58,9 +61,9 @@ public class JdbcUserDao implements ua.rozhkov.UsersListing.dao.UserDao {
 			
 			preparedStatement.setString(1, user.getFirstName());
 			preparedStatement.setString(2, user.getLastName());
-			preparedStatement.setFloat(3, user.getSalary());
+			preparedStatement.setDouble(3, user.getSalary());
 			preparedStatement.setInt(4, user.getAge());
-			preparedStatement.setDate(5, user.getDateOfBirth());
+			preparedStatement.setDate(5, Date.valueOf(user.getDateOfBirth()));
 			preparedStatement.setInt(6, user.getId());
 			preparedStatement.execute();
 		}
@@ -84,13 +87,13 @@ public class JdbcUserDao implements ua.rozhkov.UsersListing.dao.UserDao {
 		}
 	}
 	
-	public List <User> searchBetweenDate(Date start, Date end) {
+	public List <User> searchBetweenDate(LocalDate start, LocalDate end) {
 		
 		try (Connection connection = connect();
 			 PreparedStatement preparedStatement = connection.prepareStatement(searchBetweenDateSQL)) {
 			
-			preparedStatement.setDate(1, start);
-			preparedStatement.setDate(2, end);
+			preparedStatement.setDate(1, Date.valueOf(start));
+			preparedStatement.setDate(2, Date.valueOf(end));
 			ResultSet resultSet = preparedStatement.executeQuery();
 			return userMapper.map(resultSet);
 		}
@@ -100,10 +103,10 @@ public class JdbcUserDao implements ua.rozhkov.UsersListing.dao.UserDao {
 	}
 	
 	private Connection connect() throws SQLException {
-		String url = "jdbc:mysql://127.0.0.1:3306/mydb";
+		/*String url = "jdbc:mysql://127.0.0.1:3306/mydb";
 		String user_name = "PsyhoBelka";
-		String password = "admin";
+		String password = "admin";*/
 		
-		return DriverManager.getConnection(url, user_name, password);
+		return dataSource.getConnection();
 	}
 }

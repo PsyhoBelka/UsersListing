@@ -4,6 +4,7 @@ package ua.rozhkov.UsersListing.dao;
 import ua.rozhkov.UsersListing.entity.User;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 public interface UserDao {
@@ -16,5 +17,5 @@ public interface UserDao {
 	
 	void deleteUser(int id);
 	
-	List <User> searchBetweenDate(Date start, Date end);
+	List <User> searchBetweenDate(LocalDate start, LocalDate end);
 }
